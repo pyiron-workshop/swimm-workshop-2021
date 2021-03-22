@@ -1,0 +1,1220 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 2 - Up-scaling pyiron workflows &#8212; swimm-workshop-2021</title>
+    
+  <link rel="stylesheet" href="_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.37f24b989f4638ff9c27c22dc7559d4f.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Day 3 - Beyond atomistics" href="day3.html" />
+    <link rel="prev" title="Day 1 - Introduction to pyiron" href="day1.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  <img src="_static/logo_dark.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">swimm-workshop-2021</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="README.html">
+   Simulation Workflows in Materials Modelling (SWiMM 2021)
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="day1.html">
+   Day 1 - Introduction to pyiron
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Day 2 - Up-scaling pyiron workflows
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="day3.html">
+   Day 3 - Beyond atomistics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="example.html">
+   pyiron example notebook
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://pyiron.org">pyiron</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/day2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/pyiron/swimm-workshop-2021/master?urlpath=lab/tree/day2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#energy-volume-curve">
+   Energy volume curve
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#murnaghan-class">
+   Murnaghan Class
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#phonopy-interface">
+   Phonopy interface
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quasi-harmonic-approximation">
+   Quasi-harmonic approximation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#scriptjob">
+   Scriptjob
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#library">
+   Library
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="day-2-up-scaling-pyiron-workflows">
+<h1>Day 2 - Up-scaling pyiron workflows<a class="headerlink" href="#day-2-up-scaling-pyiron-workflows" title="Permalink to this headline">¶</a></h1>
+<p>Following the introduction on the first day, the second day is focused on explaining how to up-scale existing simulation workflows. The tutorial is based on the molecular dynamics simulation code <a class="reference external" href="https://lammps.sandia.gov">LAMMPS</a>. Still the same protocols can also be executed with DFT codes like <a class="reference external" href="https://www.vasp.at">VASP</a> and <a class="reference external" href="https://sxrepo.mpie.de">S/PHI/nX</a>.</p>
+<div class="section" id="energy-volume-curve">
+<h2>Energy volume curve<a class="headerlink" href="#energy-volume-curve" title="Permalink to this headline">¶</a></h2>
+<p>Following the tutorial from the first day, the energy volume curve is calculated using a <code class="docutils literal notranslate"><span class="pre">for-loop</span></code> over different strains.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyiron</span> <span class="kn">import</span> <span class="n">Project</span>
+<span class="n">pr</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;scaleup&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span><span class="o">.</span><span class="n">remove_jobs_silently</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_mini</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">Lammps</span><span class="p">(</span><span class="n">job_name</span><span class="o">=</span><span class="s2">&quot;job_mini&quot;</span><span class="p">)</span>
+<span class="n">job_mini</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">ase</span><span class="o">.</span><span class="n">bulk</span><span class="p">(</span><span class="s2">&quot;Fe&quot;</span><span class="p">,</span> <span class="n">cubic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">potential</span> <span class="o">=</span> <span class="n">job_mini</span><span class="o">.</span><span class="n">list_potentials</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">potential</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;1997--Ackland-G-J--Fe--LAMMPS--ipr1&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_mini</span><span class="o">.</span><span class="n">calc_minimize</span><span class="p">(</span><span class="n">pressure</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">job_mini</span><span class="o">.</span><span class="n">potential</span> <span class="o">=</span> <span class="n">potential</span>
+<span class="n">job_mini</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job job_mini was saved and received the ID: 266
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alat_guess</span> <span class="o">=</span> <span class="n">job_mini</span><span class="o">.</span><span class="n">get_structure</span><span class="p">()</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">alat_guess</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.866
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">strain</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="n">job_name</span> <span class="o">=</span> <span class="s2">&quot;lmp_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">strain</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">Lammps</span><span class="p">(</span><span class="n">job_name</span><span class="o">=</span><span class="n">job_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">alat_guess</span> <span class="o">*</span> <span class="n">strain</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">ase</span><span class="o">.</span><span class="n">bulk</span><span class="p">(</span><span class="s2">&quot;Fe&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">alat_guess</span> <span class="o">*</span> <span class="n">strain</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">),</span> <span class="p">)</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">potential</span> <span class="o">=</span> <span class="n">potential</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.7675753208676444
+The job lmp_0_9 was saved and received the ID: 267
+2.7879258702511898
+The job lmp_0_92 was saved and received the ID: 268
+2.8079835805272397
+The job lmp_0_94 was saved and received the ID: 269
+2.8277587643206537
+The job lmp_0_96 was saved and received the ID: 270
+2.8472611651817745
+The job lmp_0_98 was saved and received the ID: 271
+2.866499999891875
+The job lmp_1_0 was saved and received the ID: 272
+2.885483996845223
+The job lmp_1_02 was saved and received the ID: 273
+2.90422143094099
+The job lmp_1_04 was saved and received the ID: 274
+2.9227201553630375
+The job lmp_1_06 was saved and received the ID: 275
+2.9409876305783165
+The job lmp_1_08 was saved and received the ID: 276
+2.9590309508440615
+The job lmp_1_1 was saved and received the ID: 277
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vol_lst</span><span class="p">,</span> <span class="n">eng_lst</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">pr</span><span class="o">.</span><span class="n">iter_jobs</span><span class="p">():</span> 
+    <span class="k">if</span> <span class="s2">&quot;lmp_&quot;</span> <span class="ow">in</span> <span class="n">job</span><span class="o">.</span><span class="n">job_name</span><span class="p">:</span>
+        <span class="n">vol_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">job</span><span class="p">[</span><span class="s2">&quot;output/generic/volume&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">eng_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">job</span><span class="p">[</span><span class="s2">&quot;output/generic/energy_tot&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vol_lst</span><span class="p">,</span> <span class="n">eng_lst</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Volume&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Energy&#39;)
+</pre></div>
+</div>
+<img alt="_images/day2_10_1.png" src="_images/day2_10_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="murnaghan-class">
+<h2>Murnaghan Class<a class="headerlink" href="#murnaghan-class" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_fe</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">Lammps</span><span class="p">(</span><span class="n">job_name</span><span class="o">=</span><span class="s2">&quot;job_fe&quot;</span><span class="p">)</span>
+<span class="n">job_fe</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">job_mini</span><span class="o">.</span><span class="n">get_structure</span><span class="p">()</span>
+<span class="n">job_fe</span><span class="o">.</span><span class="n">potential</span> <span class="o">=</span> <span class="n">potential</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_murn</span> <span class="o">=</span> <span class="n">job_fe</span><span class="o">.</span><span class="n">copy_template</span><span class="p">(</span>
+    <span class="n">new_job_name</span><span class="o">=</span><span class="s2">&quot;job_murn&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">murn</span> <span class="o">=</span> <span class="n">job_murn</span><span class="o">.</span><span class="n">create_job</span><span class="p">(</span>
+    <span class="n">job_type</span><span class="o">=</span><span class="n">pr</span><span class="o">.</span><span class="n">job_type</span><span class="o">.</span><span class="n">Murnaghan</span><span class="p">,</span> 
+    <span class="n">job_name</span><span class="o">=</span><span class="s2">&quot;murn&quot;</span>
+<span class="p">)</span>
+<span class="n">murn</span><span class="o">.</span><span class="n">input</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Parameter</th>
+      <th>Value</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>num_points</td>
+      <td>11</td>
+      <td>number of sample points</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>fit_type</td>
+      <td>polynomial</td>
+      <td>['polynomial', 'birch', 'birchmurnaghan', 'murnaghan', 'pouriertarantola', 'vinet']</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>fit_order</td>
+      <td>3</td>
+      <td>order of the fit polynom</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>vol_range</td>
+      <td>0.1</td>
+      <td>relative volume variation around volume defined by ref_ham</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">murn</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job murn was saved and received the ID: 278
+The job strain_0_9 was saved and received the ID: 279
+The job strain_0_92 was saved and received the ID: 280
+The job strain_0_94 was saved and received the ID: 281
+The job strain_0_96 was saved and received the ID: 282
+The job strain_0_98 was saved and received the ID: 283
+The job strain_1_0 was saved and received the ID: 284
+The job strain_1_02 was saved and received the ID: 285
+The job strain_1_04 was saved and received the ID: 286
+The job strain_1_06 was saved and received the ID: 287
+The job strain_1_08 was saved and received the ID: 288
+The job strain_1_1 was saved and received the ID: 289
+job_id:  279 finished
+job_id:  280 finished
+job_id:  281 finished
+job_id:  282 finished
+job_id:  283 finished
+job_id:  284 finished
+job_id:  285 finished
+job_id:  286 finished
+job_id:  287 finished
+job_id:  288 finished
+job_id:  289 finished
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">murn</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/day2_16_0.png" src="_images/day2_16_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="phonopy-interface">
+<h2>Phonopy interface<a class="headerlink" href="#phonopy-interface" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_bulk</span> <span class="o">=</span> <span class="n">job_fe</span><span class="o">.</span><span class="n">copy_template</span><span class="p">(</span>
+    <span class="n">new_job_name</span><span class="o">=</span><span class="s2">&quot;job_bulk&quot;</span>
+<span class="p">)</span>
+<span class="n">job_bulk</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job job_bulk was saved and received the ID: 290
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_phono</span> <span class="o">=</span> <span class="n">job_fe</span><span class="o">.</span><span class="n">copy_template</span><span class="p">(</span>
+    <span class="n">new_job_name</span><span class="o">=</span><span class="s2">&quot;job_phono&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phono</span> <span class="o">=</span> <span class="n">job_phono</span><span class="o">.</span><span class="n">create_job</span><span class="p">(</span>
+    <span class="n">job_type</span><span class="o">=</span><span class="n">pr</span><span class="o">.</span><span class="n">job_type</span><span class="o">.</span><span class="n">PhonopyJob</span><span class="p">,</span> 
+    <span class="n">job_name</span><span class="o">=</span><span class="s2">&quot;phono&quot;</span>
+<span class="p">)</span>
+<span class="n">phono</span><span class="o">.</span><span class="n">input</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Parameter</th>
+      <th>Value</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>interaction_range</td>
+      <td>10.000000</td>
+      <td>Minimal size of supercell, Ang</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>factor</td>
+      <td>15.633302</td>
+      <td>Frequency unit conversion factor (default for VASP)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>displacement</td>
+      <td>0.010000</td>
+      <td>atoms displacement, Ang</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>dos_mesh</td>
+      <td>20.000000</td>
+      <td>mesh size for DOS calculation</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>primitive_matrix</td>
+      <td>NaN</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phono</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job phono was saved and received the ID: 291
+The job job_phono_0 was saved and received the ID: 292
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phono</span><span class="o">.</span><span class="n">plot_dos</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Phonon DOS vs Energy&#39;}, xlabel=&#39;Frequency [THz]&#39;, ylabel=&#39;DOS&#39;&gt;
+</pre></div>
+</div>
+<img alt="_images/day2_22_1.png" src="_images/day2_22_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temperatures</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">41</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bulk_thermal_properties</span> <span class="o">=</span> <span class="n">phono</span><span class="o">.</span><span class="n">get_thermal_properties</span><span class="p">(</span><span class="n">temperatures</span><span class="o">=</span><span class="n">temperatures</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temperatures</span><span class="p">,</span> <span class="n">job_bulk</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">energy_pot</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bulk_thermal_properties</span><span class="o">.</span><span class="n">free_energies</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Temperature [K]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Free energy  ($U+F_</span><span class="si">{vib}</span><span class="s2">$)  [eV]&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/day2_25_0.png" src="_images/day2_25_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="quasi-harmonic-approximation">
+<h2>Quasi-harmonic approximation<a class="headerlink" href="#quasi-harmonic-approximation" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://pyiron.org/phasediagram-workshop-2020/Introduction.html">https://pyiron.org/phasediagram-workshop-2020/Introduction.html</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_strain</span> <span class="o">=</span> <span class="n">job_fe</span><span class="o">.</span><span class="n">copy_template</span><span class="p">(</span>
+    <span class="n">new_job_name</span><span class="o">=</span><span class="s2">&quot;job_strain&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">murn_strain</span> <span class="o">=</span> <span class="n">job_strain</span><span class="o">.</span><span class="n">create_job</span><span class="p">(</span>
+    <span class="n">job_type</span><span class="o">=</span><span class="n">pr</span><span class="o">.</span><span class="n">job_type</span><span class="o">.</span><span class="n">Murnaghan</span><span class="p">,</span>
+    <span class="n">job_name</span><span class="o">=</span><span class="s2">&quot;murn_strain&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phono_strain</span> <span class="o">=</span> <span class="n">job_strain</span><span class="o">.</span><span class="n">create_job</span><span class="p">(</span>
+    <span class="n">job_type</span><span class="o">=</span><span class="n">pr</span><span class="o">.</span><span class="n">job_type</span><span class="o">.</span><span class="n">PhonopyJob</span><span class="p">,</span>
+    <span class="n">job_name</span><span class="o">=</span><span class="s2">&quot;phono_strain&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quasi_strain</span> <span class="o">=</span> <span class="n">phono_strain</span><span class="o">.</span><span class="n">create_job</span><span class="p">(</span>
+    <span class="n">job_type</span><span class="o">=</span><span class="n">pr</span><span class="o">.</span><span class="n">job_type</span><span class="o">.</span><span class="n">QuasiHarmonicJob</span><span class="p">,</span>
+    <span class="n">job_name</span><span class="o">=</span><span class="s2">&quot;quasi_strain&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quasi_strain</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="s2">&quot;temperature_end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">800</span>
+<span class="n">quasi_strain</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="s2">&quot;temperature_steps&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">41</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">murn_strain</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">quasi_strain</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job murn_strain was saved and received the ID: 293
+The job strain_0_9 was saved and received the ID: 294
+The job strain_0_92 was saved and received the ID: 295
+The job strain_0_94 was saved and received the ID: 296
+The job strain_0_96 was saved and received the ID: 297
+The job strain_0_98 was saved and received the ID: 298
+The job strain_1_0 was saved and received the ID: 299
+The job strain_1_02 was saved and received the ID: 300
+The job strain_1_04 was saved and received the ID: 301
+The job strain_1_06 was saved and received the ID: 302
+The job strain_1_08 was saved and received the ID: 303
+The job strain_1_1 was saved and received the ID: 304
+job_id:  294 finished
+job_id:  295 finished
+job_id:  296 finished
+job_id:  297 finished
+job_id:  298 finished
+job_id:  299 finished
+job_id:  300 finished
+job_id:  301 finished
+job_id:  302 finished
+job_id:  303 finished
+job_id:  304 finished
+The job quasi_strain was saved and received the ID: 305
+The job strain_0_9 was saved and received the ID: 306
+The job job_strain_0 was saved and received the ID: 307
+The job strain_0_92 was saved and received the ID: 308
+The job job_strain_0 was saved and received the ID: 309
+The job strain_0_94 was saved and received the ID: 310
+The job job_strain_0 was saved and received the ID: 311
+The job strain_0_96 was saved and received the ID: 312
+The job job_strain_0 was saved and received the ID: 313
+The job strain_0_98 was saved and received the ID: 314
+The job job_strain_0 was saved and received the ID: 315
+The job strain_1_0 was saved and received the ID: 316
+The job job_strain_0 was saved and received the ID: 317
+The job strain_1_02 was saved and received the ID: 318
+The job job_strain_0 was saved and received the ID: 319
+The job strain_1_04 was saved and received the ID: 320
+The job job_strain_0 was saved and received the ID: 321
+The job strain_1_06 was saved and received the ID: 322
+The job job_strain_0 was saved and received the ID: 323
+The job strain_1_08 was saved and received the ID: 324
+The job job_strain_0 was saved and received the ID: 325
+The job strain_1_1 was saved and received the ID: 326
+The job job_strain_0 was saved and received the ID: 327
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Iterate over the the output of the QuasiHarmonicJob to plot the temperature dependent free energy over volume </span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">free_energy</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+        <span class="nb">zip</span><span class="p">(</span><span class="n">quasi_strain</span><span class="p">[</span><span class="s2">&quot;output/temperatures&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> 
+            <span class="n">quasi_strain</span><span class="p">[</span><span class="s2">&quot;output/free_energy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> 
+            <span class="n">quasi_strain</span><span class="p">[</span><span class="s2">&quot;output/volumes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)):</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">quasi_strain</span><span class="p">[</span><span class="s2">&quot;output/temperatures&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+    <span class="c1"># Add the energy of the Murnaghan Job to the vibrational free energy</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">free_energy</span> <span class="o">+</span> <span class="n">murn_strain</span><span class="p">[</span><span class="s2">&quot;output/energy&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+<span class="c1"># Add labels to the plot     </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Volume&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Free Energy&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add a color bar to visualise the temperature dependence </span>
+<span class="n">temperatures</span> <span class="o">=</span> <span class="n">quasi_strain</span><span class="p">[</span><span class="s2">&quot;output/temperatures&quot;</span><span class="p">]</span>
+<span class="n">normalize</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">temperatures</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">vmax</span><span class="o">=</span><span class="n">temperatures</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">scalarmappaple</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">scalarmappaple</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span><span class="n">temperatures</span><span class="p">)</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">scalarmappaple</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Temperature&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/day2_34_0.png" src="_images/day2_34_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the optimise_volume() function of the QuasiHarmonicJob  </span>
+<span class="n">v0_lst</span><span class="p">,</span> <span class="n">free_eng_lst</span><span class="p">,</span> <span class="n">entropy_lst</span><span class="p">,</span> <span class="n">cv_lst</span> <span class="o">=</span> <span class="n">quasi_strain</span><span class="o">.</span><span class="n">optimise_volume</span><span class="p">(</span>
+    <span class="c1"># It requires the output energy of the energy volume curve as additional input </span>
+    <span class="n">bulk_eng</span><span class="o">=</span><span class="n">murn_strain</span><span class="p">[</span><span class="s2">&quot;output/energy&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">temperature_output_lst</span> <span class="o">=</span> <span class="n">quasi_strain</span><span class="p">[</span><span class="s2">&quot;output/temperatures&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temperature_output_lst</span><span class="p">,</span> <span class="n">v0_lst</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Temperature&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Volume&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Volume&#39;)
+</pre></div>
+</div>
+<img alt="_images/day2_36_1.png" src="_images/day2_36_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temperature_output_lst</span><span class="p">,</span> <span class="n">free_eng_lst</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Temperature&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Free Energy&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Free Energy&#39;)
+</pre></div>
+</div>
+<img alt="_images/day2_37_1.png" src="_images/day2_37_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="scriptjob">
+<h2>Scriptjob<a class="headerlink" href="#scriptjob" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">python_script</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">from pyiron import Project</span>
+<span class="s2">pr = Project(&quot;script&quot;)</span>
+<span class="s2">job = pr.create.job.Lammps(&quot;lmp&quot;)</span>
+<span class="s2">job.structure = pr.create.structure.ase.bulk(&quot;Fe&quot;)</span>
+<span class="s2">job.run()</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;script.py&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">python_script</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_script</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">ScriptJob</span><span class="p">(</span><span class="s2">&quot;script&quot;</span><span class="p">)</span>
+<span class="n">job_script</span><span class="o">.</span><span class="n">script_path</span> <span class="o">=</span> <span class="s2">&quot;script.py&quot;</span>
+<span class="n">job_script</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job script was saved and received the ID: 328
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span><span class="o">.</span><span class="n">job_table</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>status</th>
+      <th>chemicalformula</th>
+      <th>job</th>
+      <th>subjob</th>
+      <th>projectpath</th>
+      <th>project</th>
+      <th>timestart</th>
+      <th>timestop</th>
+      <th>totalcputime</th>
+      <th>computer</th>
+      <th>hamilton</th>
+      <th>hamversion</th>
+      <th>parentid</th>
+      <th>masterid</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>266</td>
+      <td>finished</td>
+      <td>Fe2</td>
+      <td>job_mini</td>
+      <td>/job_mini</td>
+      <td>/Users/jan/pyiron/projects/</td>
+      <td>2021/2021-03-22-cecam-workshop/scaleup/</td>
+      <td>2021-03-22 20:55:17.696081</td>
+      <td>2021-03-22 20:55:18.155436</td>
+      <td>0.0</td>
+      <td>pyiron@MacBook-Pro.local#1</td>
+      <td>Lammps</td>
+      <td>0.1</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>267</td>
+      <td>finished</td>
+      <td>Fe</td>
+      <td>lmp_0_9</td>
+      <td>/lmp_0_9</td>
+      <td>/Users/jan/pyiron/projects/</td>
+      <td>2021/2021-03-22-cecam-workshop/scaleup/</td>
+      <td>2021-03-22 20:55:19.027660</td>
+      <td>2021-03-22 20:55:19.454001</td>
+      <td>0.0</td>
+      <td>pyiron@MacBook-Pro.local#1</td>
+      <td>Lammps</td>
+      <td>0.1</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>268</td>
+      <td>finished</td>
+      <td>Fe</td>
+      <td>lmp_0_92</td>
+      <td>/lmp_0_92</td>
+      <td>/Users/jan/pyiron/projects/</td>
+      <td>2021/2021-03-22-cecam-workshop/scaleup/</td>
+      <td>2021-03-22 20:55:20.231723</td>
+      <td>2021-03-22 20:55:20.653377</td>
+      <td>0.0</td>
+      <td>pyiron@MacBook-Pro.local#1</td>
+      <td>Lammps</td>
+      <td>0.1</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>269</td>
+      <td>finished</td>
+      <td>Fe</td>
+      <td>lmp_0_94</td>
+      <td>/lmp_0_94</td>
+      <td>/Users/jan/pyiron/projects/</td>
+      <td>2021/2021-03-22-cecam-workshop/scaleup/</td>
+      <td>2021-03-22 20:55:21.409363</td>
+      <td>2021-03-22 20:55:21.834768</td>
+      <td>0.0</td>
+      <td>pyiron@MacBook-Pro.local#1</td>
+      <td>Lammps</td>
+      <td>0.1</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>270</td>
+      <td>finished</td>
+      <td>Fe</td>
+      <td>lmp_0_96</td>
+      <td>/lmp_0_96</td>
+      <td>/Users/jan/pyiron/projects/</td>
+      <td>2021/2021-03-22-cecam-workshop/scaleup/</td>
+      <td>2021-03-22 20:55:22.658560</td>
+      <td>2021-03-22 20:55:23.095424</td>
+      <td>0.0</td>
+      <td>pyiron@MacBook-Pro.local#1</td>
+      <td>Lammps</td>
+      <td>0.1</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>325</td>
+      <td>finished</td>
+      <td>Fe128</td>
+      <td>job_strain_0</td>
+      <td>/job_strain_0</td>
+      <td>/Users/jan/pyiron/projects/</td>
+      <td>2021/2021-03-22-cecam-workshop/scaleup/quasi_strain_hdf5/strain_1_08_hdf5/</td>
+      <td>2021-03-22 20:58:17.718340</td>
+      <td>2021-03-22 20:58:18.176678</td>
+      <td>0.0</td>
+      <td>pyiron@MacBook-Pro.local#1</td>
+      <td>Lammps</td>
+      <td>0.1</td>
+      <td>None</td>
+      <td>324.0</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>326</td>
+      <td>finished</td>
+      <td>Fe2</td>
+      <td>strain_1_1</td>
+      <td>/strain_1_1</td>
+      <td>/Users/jan/pyiron/projects/</td>
+      <td>2021/2021-03-22-cecam-workshop/scaleup/quasi_strain_hdf5/</td>
+      <td>2021-03-22 20:58:20.622945</td>
+      <td>2021-03-22 20:58:25.202712</td>
+      <td>4.0</td>
+      <td>pyiron@MacBook-Pro.local#1#1/1</td>
+      <td>PhonopyJob</td>
+      <td>0.0.1</td>
+      <td>None</td>
+      <td>305.0</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>327</td>
+      <td>finished</td>
+      <td>Fe128</td>
+      <td>job_strain_0</td>
+      <td>/job_strain_0</td>
+      <td>/Users/jan/pyiron/projects/</td>
+      <td>2021/2021-03-22-cecam-workshop/scaleup/quasi_strain_hdf5/strain_1_1_hdf5/</td>
+      <td>2021-03-22 20:58:23.400485</td>
+      <td>2021-03-22 20:58:23.867371</td>
+      <td>0.0</td>
+      <td>pyiron@MacBook-Pro.local#1</td>
+      <td>Lammps</td>
+      <td>0.1</td>
+      <td>None</td>
+      <td>326.0</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>328</td>
+      <td>finished</td>
+      <td>None</td>
+      <td>script</td>
+      <td>/script</td>
+      <td>/Users/jan/pyiron/projects/</td>
+      <td>2021/2021-03-22-cecam-workshop/scaleup/</td>
+      <td>2021-03-22 21:07:59.157934</td>
+      <td>2021-03-22 21:08:04.993993</td>
+      <td>5.0</td>
+      <td>pyiron@MacBook-Pro.local#1</td>
+      <td>Script</td>
+      <td>0.1</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>329</td>
+      <td>finished</td>
+      <td>Fe</td>
+      <td>lmp</td>
+      <td>/lmp</td>
+      <td>/Users/jan/pyiron/projects/</td>
+      <td>2021/2021-03-22-cecam-workshop/scaleup/script_hdf5/script/script/</td>
+      <td>2021-03-22 21:08:03.873724</td>
+      <td>2021-03-22 21:08:04.332933</td>
+      <td>0.0</td>
+      <td>pyiron@MacBook-Pro.local#1</td>
+      <td>Lammps</td>
+      <td>0.1</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>64 rows × 15 columns</p>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="library">
+<h2>Library<a class="headerlink" href="#library" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_murn</span> <span class="o">=</span> <span class="n">job_fe</span><span class="o">.</span><span class="n">copy_template</span><span class="p">(</span>
+    <span class="n">new_job_name</span><span class="o">=</span><span class="s2">&quot;job_murn_int&quot;</span>
+<span class="p">)</span>
+<span class="n">job_murn</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">run_mode</span><span class="o">.</span><span class="n">interactive</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">murn</span> <span class="o">=</span> <span class="n">job_murn</span><span class="o">.</span><span class="n">create_job</span><span class="p">(</span>
+    <span class="n">job_type</span><span class="o">=</span><span class="n">pr</span><span class="o">.</span><span class="n">job_type</span><span class="o">.</span><span class="n">Murnaghan</span><span class="p">,</span> 
+    <span class="n">job_name</span><span class="o">=</span><span class="s2">&quot;murn_int&quot;</span>
+<span class="p">)</span>
+<span class="n">murn</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">murn</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job murn_int was saved and received the ID: 330
+The job murn_int_job_murn_int was saved and received the ID: 331
+</pre></div>
+</div>
+<img alt="_images/day2_44_1.png" src="_images/day2_44_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="day1.html" title="previous page">Day 1 - Introduction to pyiron</a>
+    <a class='right-next' id="next-link" href="day3.html" title="next page">Day 3 - Beyond atomistics</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By pyiron<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>
