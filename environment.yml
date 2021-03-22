@@ -2,6 +2,9 @@ channels:
 - conda-forge
 dependencies:
 - python
-- pyiron_atomistics =0.2.8
+- pyiron =0.4.3
+- pyiron_atomistics =0.2.9
 - lammps =2021.02.10=*openmpi*_4
+- gpaw =21.1.0
+- sphinxdft =2.7.0
 - nglview =2.7.7
