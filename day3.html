@@ -52,6 +52,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pyiron example notebook" href="example.html" />
@@ -215,6 +217,11 @@
    Open science
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -229,8 +236,10 @@
                 
   <div class="section" id="day-3-beyond-atomistics">
 <h1>Day 3 - Beyond atomistics<a class="headerlink" href="#day-3-beyond-atomistics" title="Permalink to this headline">¶</a></h1>
+<p>As illustrated by the first two days pyiron was originally designed for atomistic simulation or ab intio thermodynamics to be more specific. Still since the <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0927025618304786">publication of pyiron</a> and the release of pyiron as opensource software package on <a class="reference external" href="https://github.com/pyiron">Github</a> pyiron has been extended beyond atomistics. To foster these activities pyiron just like AiiDA joined <a class="reference external" href="https://numfocus.org">numfocus</a> as affiliated project to promote open science and open code in the materials science community. So the content of the third day is focused on how to use pyiron beyond atomistics and our general activities in the materials science community to promote open code.</p>
 <div class="section" id="implement-your-own-class">
 <h2>Implement your own class<a class="headerlink" href="#implement-your-own-class" title="Permalink to this headline">¶</a></h2>
+<p>One very direct way to use pyiron beyond atomistics is by implementing your own job class, either as a <code class="docutils literal notranslate"><span class="pre">ScriptJob</span></code> as demonstrated yesterday or as a pyiron job class. In this example the pyiron <code class="docutils literal notranslate"><span class="pre">TemplateJob</span></code> class is used to derive a <code class="docutils literal notranslate"><span class="pre">ToyJob</span></code> class which basically just copies the input to the output. The input consists of a single entry <code class="docutils literal notranslate"><span class="pre">input_energy</span></code> which is set to <span class="math notranslate nohighlight">\(100\)</span> and copied to <code class="docutils literal notranslate"><span class="pre">job[&quot;output/generic/energy_tot&quot;]</span></code>. The important part is the simplicity of implementing new classes, all that is required is bascially an <code class="docutils literal notranslate"><span class="pre">write_input()</span></code> and a <code class="docutils literal notranslate"><span class="pre">collect_output()</span></code> function. The <code class="docutils literal notranslate"><span class="pre">write_input()</span></code> function takes the generic input defined in <code class="docutils literal notranslate"><span class="pre">job.input</span></code> as a python dictionary and writes the corresponding input files for a given simulation code. Afterwards the executable is called, in this simple case it is just a shell command to copy the input in the file <code class="docutils literal notranslate"><span class="pre">input</span></code> to the output file <code class="docutils literal notranslate"><span class="pre">output</span></code> using <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">input</span> <span class="pre">&gt;</span> <span class="pre">output</span></code>. Finally the <code class="docutils literal notranslate"><span class="pre">collect_output()</span></code> function reads the output file, parses the output variables, in this example just a single one and stores the output in the HDF5 file using the <code class="docutils literal notranslate"><span class="pre">self.project_hdf5</span></code> interface, which basically accepts any kind of dictionary. So the taks of the <code class="docutils literal notranslate"><span class="pre">collect_output()</span></code> function can be summarized as parsing the output and returing a python dictionary for pyiron to store.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
@@ -264,6 +273,7 @@
 </div>
 </div>
 </div>
+<p>After the <code class="docutils literal notranslate"><span class="pre">ToyJob</span></code> class is defined it can be used like any other pyiron class:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
@@ -271,6 +281,7 @@
 </div>
 </div>
 </div>
+<p>Only the creation of the job is slightly different, instead of selecting the <code class="docutils literal notranslate"><span class="pre">job_type</span></code> from <code class="docutils literal notranslate"><span class="pre">pr.job_type.*</span></code> the <code class="docutils literal notranslate"><span class="pre">ToyJob</span></code> class is set directly:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create_job</span><span class="p">(</span><span class="n">job_type</span><span class="o">=</span><span class="n">ToyJob</span><span class="p">,</span> <span class="n">job_name</span><span class="o">=</span><span class="s2">&quot;toy&quot;</span><span class="p">)</span>
@@ -278,6 +289,7 @@
 </div>
 </div>
 </div>
+<p>Then the job can be executed like any other job - at least when the jupyter notebook is executed inline. For the case of submitting a custom job class defined in a Jupyter notebook to a remote computing cluser it is recommended to just submit the whole jupyter notebook as <code class="docutils literal notranslate"><span class="pre">ScriptJob</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
@@ -285,11 +297,12 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job toy was saved and received the ID: 265
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job toy was saved and received the ID: 68
 </pre></div>
 </div>
 </div>
 </div>
+<p>Finally the output can be accessed in the same way as already demonstrated on day one and two:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="p">[</span><span class="s1">&#39;output/generic/energy_tot&#39;</span><span class="p">]</span>
@@ -302,12 +315,23 @@
 </div>
 </div>
 </div>
-<p><a class="reference external" href="https://github.com/jan-janssen/pyiron-cp2k">https://github.com/jan-janssen/pyiron-cp2k</a>
-<a class="reference external" href="https://github.com/jan-janssen/pyiron-quantum-espresso">https://github.com/jan-janssen/pyiron-quantum-espresso</a></p>
+<p>So while the number of simulation codes currently implemented in pyiron is restricted to the ones we primarly use, it is easy to add new simulation codes. Two examples would be:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/jan-janssen/pyiron-cp2k">pyiron-cp2k</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jan-janssen/pyiron-quantum-espresso">pyiron-quantum-espresso</a></p></li>
+</ul>
+<p>Still both of these interfaces are currently in a highly experimental state and we are still looking for experienced users who would be interested to use pyiron for their research and can help us with their code specific knowledge. Apart from this pyiron can in principle used to implement any kind of calculation which benefits form a unified storage layer and the interface to HPC infrastructure.</p>
 </div>
 <div class="section" id="publish-your-workflow">
 <h2>Publish your workflow<a class="headerlink" href="#publish-your-workflow" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://github.com/pyiron/pyiron-publication-template">https://github.com/pyiron/pyiron-publication-template</a></p>
+<p>In the same direction pyiron not only supports developers by providing them with a platform to integrate their plugins but also scientists in general with a framework to publish scientific workflows developed with pyiron. The <a class="reference external" href="https://github.com/pyiron/pyiron-publication-template">pyiron-publication-template</a> is a combination of continous integration on the Github platform, with jupyterbook for a simple website and mybinder for an interactive user experience.</p>
+<p>As a scientist you can upload:</p>
+<ul class="simple">
+<li><p>your jupyter notebook which defines the physical steps of your method.</p></li>
+<li><p>your conda environment as <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file to fix the versions of the executables you used.</p></li>
+<li><p>your resources, like existing pyiron calculation, which can be extracted using <code class="docutils literal notranslate"><span class="pre">pr.pack()</span></code> or specific parameter databases like interatomic potentials for example.</p></li>
+</ul>
+<p>While the technology is rather new, there are already a hand ful of examples available which demonstrate the advantage of having such a template to have a unifed way to publish new simulation protocols and workflows:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/pyiron/pyiron_meltingpoint">https://github.com/pyiron/pyiron_meltingpoint</a></p></li>
 <li><p><a class="reference external" href="https://github.com/pyiron/pyiron_generalized_dipole">https://github.com/pyiron/pyiron_generalized_dipole</a></p></li>
@@ -318,11 +342,22 @@
 </div>
 <div class="section" id="open-science">
 <h2>Open science<a class="headerlink" href="#open-science" title="Permalink to this headline">¶</a></h2>
+<p>Finally beyond the <code class="docutils literal notranslate"><span class="pre">pyiron</span></code> project in general the developer in the pyiron project also contribute to other opensource software packages in the materials science community like <code class="docutils literal notranslate"><span class="pre">ASE</span></code> or <code class="docutils literal notranslate"><span class="pre">pymatgen</span></code>. Other contributions include:</p>
 <ul class="simple">
-<li><p>conda packages <a class="reference external" href="https://github.com/jan-janssen/conda-forge-contribution">https://github.com/jan-janssen/conda-forge-contribution</a></p></li>
-<li><p>general python packages <a class="reference external" href="https://github.com/pyiron">https://github.com/pyiron</a> <a class="reference external" href="https://github.com/pyiron/pysqa">https://github.com/pyiron/pysqa</a> <a class="reference external" href="https://github.com/pyiron/pylammpsmpi">https://github.com/pyiron/pylammpsmpi</a></p></li>
-<li><p>cloud environment for workshop <a class="reference external" href="https://hub.docker.com/u/pyiron">https://hub.docker.com/u/pyiron</a> <a class="reference external" href="https://github.com/pyiron/docker-stacks">https://github.com/pyiron/docker-stacks</a></p></li>
+<li><p>The release of components originally developed for pyiron as standalone packages as they might also be relevant to users outside the pyiron community. For example a <a class="reference external" href="https://github.com/pyiron/pysqa">simple interface to HPC queuing systems</a> based on the idea that mondern queuing systems offer a lot of different settings but most users stick to a set of predefined templates or a <a class="reference external" href="https://github.com/pyiron/pylammpsmpi">prallel interface to the lammps library</a> based on mpi4py which is directly accessible from a jupyter notebook which is executed in a serial process.</p></li>
+<li><p>As demonstrated on the first day, installing pyiron is easy because all dependencies are already included in conda-forge. This was not the case a few years ago. Over the last few years the pyiron developers <a class="reference external" href="https://github.com/jan-janssen/conda-forge-contribution">contributed over 100 packages</a> to the conda-forge community ranging from simple python codes to DFT codes written in Fortran.</p></li>
+<li><p>Finally this workshop as well as our other virtual workshops extensively use jupyterhub in combination with Docker containers to provide <a class="reference external" href="https://hub.docker.com/u/pyiron">virtual environments</a> for the participants. These virtual environments are constructed using conda packages and Github based continous integration. The build process is also <a class="reference external" href="https://github.com/pyiron/docker-stacks">publicly available</a> and could be used to automate the creation of virtual environments for other workshops as well.</p></li>
 </ul>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>The third day highlighted:</p>
+<ul class="simple">
+<li><p>the development of own classes which do not even have to be related to atomistics or materials science in general.</p></li>
+<li><p>the workflow to publish jupyter notebooks created with pyiron as a new way of sharing your work.</p></li>
+<li><p>further contributions of the pyiron developers to the open science community in general.</p></li>
+</ul>
+<p>Thank you for your attention.</p>
 </div>
 </div>
 
